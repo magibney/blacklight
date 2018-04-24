@@ -93,7 +93,7 @@ module Blacklight::Solr
                      else
                        ''
                      end
-      solr_parameters[:q] = "{!#{q_parser}#{local_params}}$qq"
+      solr_parameters[:q] = "{!#{q_parser}#{local_params} v=$qq}"
       solr_parameters[:qq] = blacklight_params[:q]
     end
 

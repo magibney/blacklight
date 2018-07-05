@@ -1,8 +1,16 @@
 xml.entry do
-  xml.title index_presenter(document).label(document_show_link_field(document))
-  
-  # updated is required, for now we'll just set it to now, sorry
-  xml.updated Time.current.iso8601
+  with_format("html") do
+    xml.title "type" => "html" do
+      xml.text! index_presenter(document).label(document_show_link_field(document))
+    end
+  end
+
+  if document.to_semantic_values.key? :last_updated
+    xml.updated Time.at(document.to_semantic_values[:last_updated].first.to_i).iso8601
+  else
+    # updated is required, for now we'll just set it to now, sorry
+    xml.updated Time.current.iso8601
+  end
   
   xml.link    "rel" => "alternate", "type" => "text/html", "href" => polymorphic_url(url_for_document(document))
   # add other doc-specific formats, atom only lets us have one per
